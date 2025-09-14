@@ -1,0 +1,91 @@
+{
+  "info": {
+    "name": "Disaster Reporting API",
+    "_postman_id": "naveen-hackathon-001",
+    "description": "APIs for ANITS Hackathon Disaster Reporting Project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "GET All Reports",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/reports/",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8000",
+          "path": ["api","reports",""]
+        }
+      }
+    },
+    {
+      "name": "POST Report (JSON)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"disaster_type\": \"fire\",\n  \"description\": \"Fire near hostel\",\n  \"latitude\": 17.68,\n  \"longitude\": 83.21\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/reports/",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8000",
+          "path": ["api","reports",""]
+        }
+      }
+    },
+    {
+      "name": "POST Report (form-data with image)",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": [
+            { "key": "disaster_type", "value": "flood", "type": "text" },
+            { "key": "description", "value": "Heavy flood in AU hostel", "type": "text" },
+            { "key": "latitude", "value": "17.6868", "type": "text" },
+            { "key": "longitude", "value": "83.2185", "type": "text" },
+            { "key": "image", "type": "file", "src": "" }
+          ]
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/reports/",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8000",
+          "path": ["api","reports",""]
+        }
+      }
+    },
+    {
+      "name": "PATCH Report Status",
+      "request": {
+        "method": "PATCH",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"Verified\"\n}"
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/api/reports/1/",
+          "protocol": "http",
+          "host": ["127","0","0","1"],
+          "port": "8000",
+          "path": ["api","reports","1",""]
+        }
+      }
+    }
+  ]
+}
