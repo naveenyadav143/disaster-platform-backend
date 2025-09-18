@@ -11,6 +11,12 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
+
+VAPID_PUBLIC_KEY = config("VAPID_PUBLIC_KEY")
+VAPID_PRIVATE_KEY = config("VAPID_PRIVATE_KEY")
+VAPID_EMAIL = config("VAPID_EMAIL")
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

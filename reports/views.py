@@ -12,6 +12,9 @@ class ReportListCreateView(generics.ListCreateAPIView):
     queryset = Report.objects.all().order_by('-timestamp')
     serializer_class = ReportSerializer
 
+    def perform_create(self, serializer):
+        report = serializer.save()
+        notify_nearby_users(report)  # 🚨
 # Update Report (status)
 class ReportUpdateView(generics.UpdateAPIView):
     queryset = Report.objects.all()
