@@ -8,20 +8,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class ReportSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer()  # Nested serializer
+    # Instead of full nested dict, accept just uid string
+    user = serializers.SlugRelatedField(
+        slug_field="uid",
+        queryset=UserProfile.objects.all()
+    )
 
     class Meta:
         model = Report
         fields = "__all__"
-
-    def create(self, validated_data):
-        user_data = validated_data.pop("user")
-        user, created = UserProfile.objects.get_or_create(
-            uid=user_data["uid"],
-            defaults={
-                "email": user_data.get("email"),
-                "name": user_data.get("name"),
-                "phone": user_data.get("phone"),
-            }
-        )
-        return Report.objects.create(user=user, **validated_data)
