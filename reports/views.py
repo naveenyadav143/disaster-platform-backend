@@ -36,6 +36,13 @@ from django.db.models import Q
 from .models import UserProfile
 from .utils import send_push
 import math
+from django.http import JsonResponse
+from .models import UserProfile
+
+def list_subscriptions(request):
+    data = list(UserProfile.objects.values("uid", "subscription"))
+    return JsonResponse(data, safe=False)
+
 
 def haversine(lat1, lon1, lat2, lon2):
     R = 6371  # km
