@@ -19,3 +19,4 @@ redis==5.2.1
 whitenoise==6.9.0
 pywebpush 
 cryptography
+python-decouple
