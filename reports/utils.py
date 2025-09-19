@@ -23,12 +23,20 @@ def send_push(subscription, title, message):
         return {"status": "failed", "details": str(e)}
 
 
+from .models import UserProfile
+
 def send_notification(report):
     """
     Send a push notification for a new report.
     """
-    user = report.user
+    user = None
+    if report.reporterId:
+        try:
+            user = UserProfile.objects.get(uid=report.reporterId)
+        except UserProfile.DoesNotExist:
+            user = None
+
     if user and user.subscription:
-        title = f"New {report.disaster_type} Report"
+        title = f"New {report.disasterType} Report"
         message = report.description or "A new disaster report has been submitted."
         send_push(user.subscription, title, message)

@@ -7,4 +7,5 @@ urlpatterns = [
     path("save-subscription/", save_subscription, name="save_subscription"),
     path("subscriptions/", list_subscriptions, name="list_subscriptions"),  # 
     path("test-notification/", test_notification, name="test_notification"),
+
 ]
