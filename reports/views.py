@@ -15,8 +15,8 @@ class ReportListCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         report = serializer.save()
         notify_nearby_users(report)  # 🚨
-# Update Report (status)
-class ReportUpdateView(generics.UpdateAPIView):
+# Update Report (status) and Delete
+class ReportUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
 
@@ -55,10 +55,10 @@ def haversine(lat1, lon1, lat2, lon2):
     return R * (2 * math.atan2(math.sqrt(a), math.sqrt(1 - a)))
 
 def notify_nearby_users(report, radius_km=5):
-    if not report.incident_location:
+    if not report.incidentLocation:
         return
-    
-    lat, lon = map(float, report.incident_location.split(","))
+
+    lat, lon = map(float, report.incidentLocation.split(","))
     users = UserProfile.objects.exclude(latitude=None).exclude(longitude=None)
 
     for user in users:
@@ -66,8 +66,8 @@ def notify_nearby_users(report, radius_km=5):
         if distance <= radius_km and user.subscription:
             send_push(
                 subscription=user.subscription,
-                title=f"🚨 {report.disaster_type}",
-                message=f"A {report.disaster_type} was reported near you ({distance:.1f} km away)."
+                title=f"🚨 {report.disasterType}",
+                message=f"A {report.disasterType} was reported near you ({distance:.1f} km away)."
             )
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
