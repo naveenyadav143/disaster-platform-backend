@@ -69,3 +69,37 @@ def notify_nearby_users(report, radius_km=5):
                 title=f"🚨 {report.disaster_type}",
                 message=f"A {report.disaster_type} was reported near you ({distance:.1f} km away)."
             )
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+from .models import UserProfile
+from .utils import send_push
+
+@csrf_exempt
+def test_notification(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            uid = data.get("uid")
+            title = data.get("title", "🚨 Test Alert")
+            message = data.get("message", "This is a test notification.")
+
+            # Find the user
+            user = UserProfile.objects.get(uid=uid)
+
+            if not user.subscription:
+                return JsonResponse({"error": "No subscription for this user"}, status=400)
+
+            # Send push notification
+            send_push(
+                subscription=user.subscription,
+                title=title,
+                message=message
+            )
+
+            return JsonResponse({"message": "Notification sent!"})
+        except UserProfile.DoesNotExist:
+            return JsonResponse({"error": "User not found"}, status=404)
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=500)
+    return JsonResponse({"error": "Invalid request"}, status=400)
