@@ -14,20 +14,23 @@ class UserProfile(models.Model):
 
 
 class Report(models.Model):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, related_name="reports")
+    reporterId = models.CharField(max_length=100, default="")  # currentUser.uid
+    reporterEmail = models.EmailField(null=True, blank=True)  # currentUser.email
+    reporterName = models.CharField(max_length=100, null=True, blank=True)  # form.reporterName
+    reporterPhone = models.CharField(max_length=15, null=True, blank=True)  # form.phone
 
-    disaster_type = models.CharField(max_length=100)
-    disaster_severity = models.CharField(max_length=50, null=True, blank=True)
+    disasterType = models.CharField(max_length=100)  # disasterTypeToSend
+    disasterSeverity = models.CharField(max_length=50, null=True, blank=True)  # form.severity
 
-    description = models.TextField(null=True, blank=True)
-    image_url = models.URLField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)  # form.description
+    imageUrl = models.URLField(null=True, blank=True)  # imgURL
 
-    reporter_location = models.CharField(max_length=255, null=True, blank=True)  # "lat, long"
-    incident_location = models.CharField(max_length=255, null=True, blank=True)  # "lat, long"
-    location = models.CharField(max_length=255, null=True, blank=True)  # raw address/place name
+    reporterLocation = models.CharField(max_length=255, null=True, blank=True)  # locationData.currentLocation.join(", ")
+    incidentLocation = models.CharField(max_length=255, null=True, blank=True)  # locationData.selectedLocation.join(", ")
+    location = models.CharField(max_length=255, null=True, blank=True)  # form.location (IncidentLocation)
 
     status = models.CharField(max_length=50, default="Pending")
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.disaster_type} by {self.user.name if self.user else 'Unknown'}"
+        return f"{self.disasterType} by {self.reporterName or 'Unknown'}"
