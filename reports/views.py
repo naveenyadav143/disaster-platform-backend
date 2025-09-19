@@ -19,6 +19,7 @@ class ReportListCreateView(generics.ListCreateAPIView):
 class ReportUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Report.objects.all()
     serializer_class = ReportSerializer
+    lookup_field = 'reporterId'
 
 @csrf_exempt
 def save_subscription(request):
