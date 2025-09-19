@@ -28,7 +28,7 @@ class Report(models.Model):
     reporterLocation = models.CharField(max_length=255, null=True, blank=True)  # locationData.currentLocation.join(", ")
     incidentLocation = models.CharField(max_length=255, null=True, blank=True)  # locationData.selectedLocation.join(", ")
     location = models.CharField(max_length=255, null=True, blank=True)  # form.location (IncidentLocation)
-
+    accepted = models.BooleanField(default=False)
     status = models.CharField(max_length=50, default="Pending")
     timestamp = models.DateTimeField(auto_now_add=True)
 
